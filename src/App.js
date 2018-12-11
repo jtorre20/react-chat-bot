@@ -25,7 +25,42 @@ class App extends Component {
     })
   }
 
-  
+  handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      this.submitMessage()
+    }
+  }
+
+  async submitMessage() {
+    const { input } = this.state
+    if(input === '') return
+    const message = new Message({
+      id: 0,
+      message: input
+    })
+    let messages = [...this.state.messages, message]
+
+    this.setState({
+      messages,
+      input: ''
+    })
+
+    const response = await Interactions.send("BookTripMOBILEHUB", input);
+    const responseMessage = new Message({
+      id: 1, 
+      message: response.message
+    })
+    messages = [...this.state.messages, responseMessage]
+    this.setState({ messages })
+
+    if (response.dialogState === 'Fulfilled'){
+      if (response.intentName === 'BookTripBookHotel') {
+        const { slots: { BookTripCheckInDate, BookTripLocation, BookTripNights, BookTripRoomType } } = response
+        const finalMessage = `Congratulations! Your trip to ${BookTripLocation} with a ${BookTripRoomType} room on ${BookTripCheckInDate} for ${BookTripNights} days has been booked!!`
+        this.setState({ finalMessage })
+      }
+    }
+  }
 
   handleComplete = (err, confirmation) =>{
     if (err) {
