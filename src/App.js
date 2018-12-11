@@ -26,6 +26,7 @@ class App extends Component {
   }
 
   handleKeyPress = (e) => {
+    // debugger
     if(e.key === 'Enter'){
       this.submitMessage()
     }
