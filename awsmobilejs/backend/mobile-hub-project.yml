@@ -8,6 +8,12 @@ features:
           description: Bot to make reservations for a visit to a city.
           existing: false
           template: bot-trips
+      Friday: !com.amazonaws.mobilehub.v0.Bot 
+        attributes:
+          childDirected: true
+          description: ''
+          existing: true
+          template: bot-import
   content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery 
     attributes:
       enabled: true
